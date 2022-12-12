@@ -93,7 +93,7 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 # Use the default production configuration
 COPY php.production.ini "$PHP_INI_DIR/php.ini"
 
-RUN git clone https://github.com/pixelfed/pixelfed.git && git checkout ${BRANCH}
+RUN git clone https://github.com/pixelfed/pixelfed.git . && git checkout ${BRANCH}
 # for detail why storage is copied this way, pls refer to https://github.com/pixelfed/pixelfed/pull/2137#discussion_r434468862
 RUN cp -r storage storage.skel \
   && cp -r bootstrap bootstrap.skel \
