@@ -73,7 +73,7 @@ jobs:
           tags: |
             type=raw,value=${{ matrix.branch }}
           flavor: |
-            suffix=-${{ matrix.webserver }},onlatest=true
+            suffix=-${{ matrix.webserver }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
