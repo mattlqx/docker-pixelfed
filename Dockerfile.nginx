@@ -102,6 +102,7 @@ RUN cp -r storage storage.skel \
   && cp /var/www/contrib/docker/nginx.conf /etc/nginx \
   && composer install --prefer-dist --no-interaction --no-ansi --optimize-autoloader \
   && rm -rf html && ln -s public html \
+  && ln -s storage/app/public public/storage \
   && mkdir -p /var/lib/nginx \
   && chown -R www-data:www-data /etc/nginx/nginx.conf /var/www /var/lib/nginx \
   && find /var/www -type d -exec chmod 755 {} \; \
