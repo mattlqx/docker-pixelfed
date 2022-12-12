@@ -90,10 +90,12 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && rm -rf /var/cache/apt \
   && rm -rf /var/lib/apt/lists/
 
+RUN cd /var && rm -fr www && git clone https://github.com/pixelfed/pixelfed.git www && cd www && git checkout ${BRANCH}
+COPY nginx.conf start.nginx.sh /var/www/contrib/docker/
+
 # Use the default production configuration
 COPY php.production.ini "$PHP_INI_DIR/php.ini"
 
-RUN cd /var && rm -fr www && git clone https://github.com/pixelfed/pixelfed.git www && cd www && git checkout ${BRANCH}
 # for detail why storage is copied this way, pls refer to https://github.com/pixelfed/pixelfed/pull/2137#discussion_r434468862
 RUN cp -r storage storage.skel \
   && cp -r bootstrap bootstrap.skel \
