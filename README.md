@@ -4,9 +4,11 @@ Forked from the [in-repo Dockerfiles](https://github.com/pixelfed/pixelfed/tree/
 
 Tags are rebuilt daily so you should use the SHA hash if mutability concerns you.
 
+Images at ghcr.io/mattlqx/docker-pixelfed
+
 Available tags:
-- dev
-- v0.11.4
+- dev-nginx
+- v0.11.4-nginx
 
 ## Maintainer
 
