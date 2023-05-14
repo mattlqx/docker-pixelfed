@@ -103,7 +103,6 @@ RUN cp -r storage storage.skel \
   && composer update \
   && composer install --prefer-dist --no-interaction --no-ansi --optimize-autoloader \
   && rm -rf html && ln -s public html \
-  && ln -s storage/app/public public/storage \
   && mkdir -p /var/lib/nginx \
   && chown -R www-data:www-data /etc/nginx/nginx.conf /var/www /var/lib/nginx \
   && find /var/www -type d -exec chmod 755 {} \; \
@@ -113,7 +112,8 @@ RUN cp -r storage storage.skel \
   && mkdir -p /run/php-fpm \
   && chown www-data:www-data /run/php-fpm \
   && sed -i 's/listen = 127.0.0.1:9000/listen = \/run\/php-fpm\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf \
-  && rm -f /usr/local/etc/php-fpm.d/zz-docker.conf
+  && rm -f /usr/local/etc/php-fpm.d/zz-docker.conf \
+  && php artisan storage:link
 VOLUME /var/www/storage /var/www/bootstrap
 
 CMD ["/var/www/contrib/docker/start.nginx.sh"]
