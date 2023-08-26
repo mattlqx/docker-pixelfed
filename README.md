@@ -8,7 +8,7 @@ Images at ghcr.io/mattlqx/docker-pixelfed
 
 Available tags:
 - dev-nginx
-- v0.11.8-nginx
+- v0.11.9-nginx
 
 ## Maintainer
 
