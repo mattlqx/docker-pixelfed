@@ -25,7 +25,7 @@ jobs:
       matrix:
         branch:
           - dev
-          - v0.11.12
+          - v0.11.13
         webserver:
           - nginx
 
