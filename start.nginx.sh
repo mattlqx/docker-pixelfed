@@ -16,7 +16,6 @@ cp /tmp/nginx.conf /etc/nginx/nginx.conf
 
 # Refresh the environment
 php artisan storage:link
-php artisan horizon:publish
 php artisan route:cache
 php artisan view:cache
 php artisan config:cache
@@ -25,6 +24,5 @@ php artisan migrate --force
 php artisan instance:actor
 
 # Finally run everything
-php artisan websockets:serve --host=127.0.0.1 &
 php-fpm -D &
 nginx -g 'daemon off;'
