@@ -112,8 +112,13 @@ RUN cp -r storage storage.skel \
   && mkdir -p /run/php-fpm \
   && chown www-data:www-data /run/php-fpm \
   && sed -i 's/listen = 127.0.0.1:9000/listen = \/run\/php-fpm\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf \
+  # since we're specifing running as the www-data user below, we can remove the following lines from our php-fpm config to avoid a benign warning
+  && sed -i '/user = www-data/d' /usr/local/etc/php-fpm.d/www.conf \
+  && sed -i '/group = www-data/d' /usr/local/etc/php-fpm.d/www.conf \
   && rm -f /usr/local/etc/php-fpm.d/zz-docker.conf \
   && php artisan storage:link
 VOLUME /var/www/storage /var/www/bootstrap
+
+USER www-data
 
 CMD ["/var/www/contrib/docker/start.nginx.sh"]
