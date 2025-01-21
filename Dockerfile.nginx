@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-buster
+FROM php:8.4-fpm
 
 ARG BRANCH=dev
 
@@ -9,7 +9,9 @@ ENV COMPOSER_VERSION=2.5.5 \
   PATH="~/.composer/vendor/bin:./vendor/bin:${PATH}" \
   DEBIAN_FRONTEND=noninteractive
 WORKDIR /var/www/
-RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/2.7.13/install-php-extensions /usr/local/bin/
+RUN set +x \
+  && curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
   && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
   && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} && rm -rf /tmp/composer-setup.php \
@@ -24,9 +26,10 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   git \
   gosu \
   zip \
-  unzip \ 
-  libzip-dev \ 
+  unzip \
+  libzip-dev \
   libcurl4-openssl-dev \
+  m4 \
   ## Image Optimization
   optipng \
   pngquant \
@@ -39,7 +42,7 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   # Required for GD
   libxpm4 \
   libxpm-dev \
-  libwebp6 \
+  libwebp7 \
   libwebp-dev \
   ## Video Processing
   ffmpeg \
@@ -55,16 +58,16 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && update-locale \
   # Install PHP extensions
   && docker-php-source extract \
-  #PHP Imagemagick extensions
-  && pecl install imagick \
-  && docker-php-ext-enable imagick \
   # PHP GD extensions
   && docker-php-ext-configure gd \
   --with-freetype \
   --with-jpeg \
   --with-webp \
   --with-xpm \
+  && docker-php-ext-configure gd \
   && docker-php-ext-install -j$(nproc) gd \
+  #PHP Imagemagick extensions
+  && install-php-extensions imagick \
   #PHP Redis extensions
   && pecl install redis \
   && docker-php-ext-enable redis \
@@ -72,7 +75,7 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && docker-php-ext-install pdo_mysql pdo_pgsql pdo_sqlite \
   #PHP extensions (dependencies)
   && docker-php-ext-configure intl \
-  && docker-php-ext-install -j$(nproc) intl bcmath zip pcntl exif curl \
+  && docker-php-ext-install intl bcmath zip pcntl exif curl \
   #APACHE Bootstrap
   #   && a2enmod rewrite remoteip \
   #  && {\
