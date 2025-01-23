@@ -10,6 +10,16 @@ Available tags:
 - dev-nginx
 - v0.12.4-nginx
 
+## Environment Variables
+
+In addition to [the environment variables supported by PixelFed](https://docs.pixelfed.org/running-pixelfed/configuration.html), the following variables are supported:
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| APP_PORT | Port that nginx will listen on | - |
+| APP_DOMAIN | Server name/domain for nginx configuration | - |
+| ENABLE_HORIZON | Enable Laravel Horizon queue worker in the container. By default, it is expected to be run elsewhere. | false |
+
 ## Maintainer
 
 Matt Kulka <matt@lqx.net>

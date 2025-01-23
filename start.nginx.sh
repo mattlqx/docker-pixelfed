@@ -25,4 +25,7 @@ php artisan instance:actor
 
 # Finally run everything
 php-fpm -D &
+if [ "${ENABLE_HORIZON:-false}" = "true" ]; then
+    php artisan horizon &
+fi
 nginx -g 'daemon off;'
