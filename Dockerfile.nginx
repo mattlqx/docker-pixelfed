@@ -64,7 +64,7 @@ RUN set +x \
   --with-jpeg \
   --with-webp \
   --with-xpm \
-  && docker-php-ext-install -j$(nproc) gd \
+  && docker-php-ext-install gd \
   #PHP Imagemagick extensions
   && install-php-extensions imagick \
   #PHP Redis extensions
