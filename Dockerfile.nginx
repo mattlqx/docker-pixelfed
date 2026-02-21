@@ -93,7 +93,7 @@ COPY php.production.ini "$PHP_INI_DIR/php.ini"
 RUN cp -r storage storage.skel \
   && cp -r bootstrap bootstrap.skel \
   && cp /var/www/contrib/docker/nginx.conf /etc/nginx \
-  && composer update \
+  && composer update --with-all-dependencies --no-security-blocking \
   && composer install --prefer-dist --no-interaction --no-ansi --optimize-autoloader \
   && rm -rf html && ln -s public html \
   && mkdir -p /var/lib/nginx \
