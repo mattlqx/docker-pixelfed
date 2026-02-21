@@ -1,22 +1,22 @@
-FROM php:8.4-fpm-bookworm
+FROM php:8.5-fpm-bookworm
 
 ARG BRANCH=dev
 
 # Install Composer
-ENV COMPOSER_VERSION=2.5.5 \
+ENV COMPOSER_VERSION=2.9.5 \
   COMPOSER_HOME=/var/www/.composer \
   COMPOSER_MEMORY_LIMIT=-1 \
   PATH="~/.composer/vendor/bin:./vendor/bin:${PATH}" \
   DEBIAN_FRONTEND=noninteractive
 WORKDIR /var/www/
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/2.7.13/install-php-extensions /usr/local/bin/
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.30/install-php-extensions /usr/local/bin/
 RUN set +x \
   && curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
   && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
   && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} && rm -rf /tmp/composer-setup.php \
   && apt-get update \
-  && apt-get upgrade -y \
+  && apt-get upgrade -y --no-install-recommends \
   && apt-get install -y --no-install-recommends \
   ## Standard
   nginx \
@@ -50,6 +50,7 @@ RUN set +x \
   libpq-dev \
   libsqlite3-dev \
   mariadb-client \
+  # Utilities
   procps \
   telnet \
   # Locales Update
@@ -74,7 +75,7 @@ RUN set +x \
   && docker-php-ext-install pdo_mysql pdo_pgsql pdo_sqlite \
   #PHP extensions (dependencies)
   && docker-php-ext-configure intl \
-  && docker-php-ext-install intl bcmath zip pcntl exif curl \
+  && docker-php-ext-install intl bcmath zip pcntl exif curl ffi \
   #Cleanup
   && docker-php-source delete \
   && apt-get autoremove --purge -y \
