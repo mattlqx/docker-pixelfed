@@ -104,7 +104,7 @@ RUN cp -r storage storage.skel \
   && chmod 1777 /run \
   && mkdir -p /run/php-fpm \
   && chown www-data:www-data /run/php-fpm \
-  && sed -i 's/listen = 127.0.0.1:9000/listen = \/run\/php-fpm\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf \
+  && sed -i 's/^.*listen = 127.0.0.1:9000/listen = \/run\/php-fpm\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf \
   # since we're specifing running as the www-data user below, we can remove the following lines from our php-fpm config to avoid a benign warning
   && sed -i '/user = www-data/d' /usr/local/etc/php-fpm.d/www.conf \
   && sed -i '/group = www-data/d' /usr/local/etc/php-fpm.d/www.conf \
