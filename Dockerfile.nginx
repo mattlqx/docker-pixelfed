@@ -1,15 +1,15 @@
-FROM php:8.5-fpm-bookworm
+FROM php:8.5-fpm-trixie
 
 ARG BRANCH=dev
 
 # Install Composer
-ENV COMPOSER_VERSION=2.9.5 \
+ENV COMPOSER_VERSION=2.10.3 \
   COMPOSER_HOME=/var/www/.composer \
   COMPOSER_MEMORY_LIMIT=-1 \
   PATH="~/.composer/vendor/bin:./vendor/bin:${PATH}" \
   DEBIAN_FRONTEND=noninteractive
 WORKDIR /var/www/
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.30/install-php-extensions /usr/local/bin/
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/2.11.12/install-php-extensions /usr/local/bin/
 RUN set +x \
   && curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
