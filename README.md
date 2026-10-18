@@ -8,7 +8,7 @@ Images at ghcr.io/mattlqx/docker-pixelfed
 
 Available tags:
 - dev-nginx
-- v0.14.3-nginx
+- v0.15.1-nginx
 
 ## Environment Variables
 
