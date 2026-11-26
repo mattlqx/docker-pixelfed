@@ -6,6 +6,7 @@ name: Docker
 # documentation.
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "45 5 * * *"
   push:
@@ -21,6 +22,12 @@ env:
 
 jobs:
   build:
+    # PRs target main too: only explicit trusted main events qualify automatically.
+    if: >-
+      github.repository == 'mattlqx/docker-pixelfed' &&
+      (github.triggering_actor == 'mattlqx' ||
+       (github.ref == 'refs/heads/main' &&
+        contains(fromJSON('["push", "schedule", "workflow_dispatch"]'), github.event_name)))
     strategy:
       matrix:
         branch:
@@ -29,7 +36,8 @@ jobs:
         webserver:
           - nginx
 
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, docker-pixelfed]
+    timeout-minutes: 180
     permissions:
       contents: read
       packages: write
